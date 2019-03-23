@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">TicTacToev3</string>
+
+   <!-- Login -->
+    <string name="oneplayer">1 PLAYER</string>
+    <string name="twoplayer">2 PLAYER</string>
+    <string name="heading">Tic Tac Toe</string>
+    <string name="leaderboard">LEADERBOARD</string>
+
+    <!--dialogs-->
+    <string name="hint">Enter Name</string>
+    <string name="start">START GAME</string>
+    <string name="hint1p">Player One</string>
+    <string name="hint2p">Player Two</string>
+</resources>
