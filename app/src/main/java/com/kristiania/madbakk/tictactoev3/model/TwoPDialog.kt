@@ -21,15 +21,23 @@ class TwoPDialog : DialogFragment(){
         builder.setView(view)
 
         view.btn_start.setOnClickListener {
-            val p1 = view.et_player1.text
-            val p2 = view.et_player2.text
-            if(p1.isNotEmpty() && p2.isNotEmpty()){
+            val p1 = view.et_player1.text.toString()
+            val p2 = view.et_player2.text.toString()
+            if(p1.isNotEmpty() && p2.isNotEmpty() && p1 != p2){
 
                 val myIntent = Intent(activity,MainActivity::class.java)
+                myIntent.putExtra("isOnePlayer", false)
+                myIntent.putExtra("playerOne", p1)
+                myIntent.putExtra("playerTwo",p2)
                 startActivity(myIntent)
                 this.dismiss()
             }else{
-                Toast.makeText(activity,"Enter name to start the game!", Toast.LENGTH_SHORT).show()
+                if(p1 == p2){
+                    Toast.makeText(activity,"Can't have identical names", Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(activity,"Enter name to start the game!", Toast.LENGTH_SHORT).show()
+                }
+
             }
         }
 

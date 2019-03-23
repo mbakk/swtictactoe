@@ -24,10 +24,11 @@ class OnePDialog: DialogFragment() {
         builder.setView(view)
 
         view.btn_start.setOnClickListener {
-            val text = view.et_player.text
-            if(text.isNotEmpty()){
-
+            val p1 = view.et_player.text.toString()
+            if(p1.isNotEmpty()){
                 val myIntent = Intent(activity,MainActivity::class.java)
+                myIntent.putExtra("isOnePlayer", true)
+                myIntent.putExtra("playerOne", p1)
                 startActivity(myIntent)
                 this.dismiss()
             }else{

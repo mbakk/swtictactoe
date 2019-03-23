@@ -18,9 +18,9 @@ import kotlin.concurrent.thread
 
 class BoardFragment : Fragment() {
     private var count = 0
-    private val onePlayer = Player("Mads", -1, false)
-    private val twoPlayer = Player("TTTBot", -2, true)
-    private val game = Game(true, "easy")
+    private var onePlayer : Player = Player("Mads", -1)
+    private var twoPlayer :Player = Player("TTTBot", -2)
+    private var game = Game(true, "easy")
     private var gameIsOn = true
     private var mp: MediaPlayer? = null
 
@@ -35,10 +35,33 @@ class BoardFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        val playerInfo = activity
+        if(playerInfo?.intent != null){
+            val gameMode = playerInfo.intent.getBooleanExtra("isOnePlayer", true)
+                val p1 = playerInfo.intent.getStringExtra("playerOne")
+            onePlayer = Player(p1, -1)
+            game = Game(gameMode, "easy")
+            if(gameMode){
+                twoPlayer = Player("TTTBot", -2)
+            }else{
+                val p2 = playerInfo.intent.getStringExtra("playerTwo")
+                twoPlayer = Player(p2, -2)
+            }
+        }
+
+        tv_status.text = "${onePlayer.name}' starts the game!"
+
         btn_restart.setOnClickListener {
             resetGame()
         }
 
+        btn_lb.setOnClickListener {
+            val manager = fragmentManager
+            val ft = manager!!.beginTransaction()
+            ft.replace(R.id.fragment_container,LeaderboardFragment())
+            ft.addToBackStack(null)
+            ft.commit()
+        }
 
         for (i in 0..tb_layout.childCount - 1) {
             val row = tb_layout.getChildAt(i) as TableRow
@@ -64,6 +87,10 @@ class BoardFragment : Fragment() {
             if(game.isOnePlayer && gameIsOn){
                 aiMove()
             }
+            if(gameIsOn){
+                tv_status.text = "${turn().name}'s turn!"
+            }
+
         }
     }
 
@@ -135,7 +162,7 @@ class BoardFragment : Fragment() {
         }
         count = 0
         gameIsOn = true
-        tv_status.text = ""
+        tv_status.text = "${onePlayer.name}' starts the game!"
         game.resetBoard()
     }
 

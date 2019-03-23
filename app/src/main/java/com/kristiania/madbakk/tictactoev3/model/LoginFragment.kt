@@ -38,7 +38,14 @@ class LoginFragment : Fragment() {
                 mp.start()
             }
 
+        }
 
+        btn_lb.setOnClickListener {
+            val manager = fragmentManager
+            val ft = manager!!.beginTransaction()
+            ft.replace(R.id.fragment_container,LeaderboardFragment())
+            ft.addToBackStack(null)
+            ft.commit()
         }
 
         btn_1p.setOnClickListener {
