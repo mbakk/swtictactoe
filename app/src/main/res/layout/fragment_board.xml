@@ -130,10 +130,23 @@
                 android:textSize="20sp"
                 android:id="@+id/tv_status"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="8dp"
                 android:layout_marginTop="16dp" app:layout_constraintTop_toTopOf="parent"/>
+        <Chronometer
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/btn_restart"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toTopOf="@+id/guideline3"
+                android:id="@+id/chronometer"/>
         <Button
-                android:text="Play again"
+                android:text="@string/start_button_restart"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/btn_restart"
@@ -152,7 +165,8 @@
                 android:id="@+id/btn_lb"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginBottom="8dp" app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"/>
+                android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="8dp"/>
         <android.support.constraint.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
                                               android:id="@+id/guideline3"
                                               android:orientation="horizontal"

@@ -1,7 +1,9 @@
 package com.kristiania.madbakk.tictactoev3.model
 
+import android.arch.lifecycle.Observer
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.SystemClock
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,17 +14,21 @@ import android.widget.TableRow
 import com.kristiania.madbakk.tictactoev3.R
 import com.kristiania.madbakk.tictactoev3.controller.Game
 import com.kristiania.madbakk.tictactoev3.controller.Player
+import com.kristiania.madbakk.tictactoev3.controller.PlayerModel
 import kotlinx.android.synthetic.main.fragment_board.*
 import kotlin.concurrent.thread
 
 
 class BoardFragment : Fragment() {
     private var count = 0
-    private var onePlayer : Player = Player("Mads", -1)
-    private var twoPlayer :Player = Player("TTTBot", -2)
-    private var game = Game(true, "easy")
+    private lateinit var onePlayer :Player
+    private lateinit var twoPlayer :Player
+    private lateinit var game :Game
     private var gameIsOn = true
     private var mp: MediaPlayer? = null
+    private lateinit var playermodel : PlayerModel
+    private var playerList = arrayListOf<Player>()
+    private var savedState: Bundle? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,13 +45,13 @@ class BoardFragment : Fragment() {
         if(playerInfo?.intent != null){
             val gameMode = playerInfo.intent.getBooleanExtra("isOnePlayer", true)
                 val p1 = playerInfo.intent.getStringExtra("playerOne")
-            onePlayer = Player(p1, -1)
-            game = Game(gameMode, "easy")
+            onePlayer = Player(p1, 0, -1)
+            game = Game(gameMode)
             if(gameMode){
-                twoPlayer = Player("TTTBot", -2)
+                twoPlayer = Player("TTTBot", 0, -2)
             }else{
                 val p2 = playerInfo.intent.getStringExtra("playerTwo")
-                twoPlayer = Player(p2, -2)
+                twoPlayer = Player(p2, 0, -2)
             }
         }
 
@@ -73,7 +79,16 @@ class BoardFragment : Fragment() {
                 }
             }
         }
+
+        playermodel = PlayerModel(activity!!.application)
+        playermodel.allPlayers.observe(this, Observer { packageTypes ->
+            packageTypes?.forEach{
+                playerList.add(it)
+            }
+        })
+
     }
+
 
     private fun playerMove(cellId: Int, btn: ImageButton){
         if(game.move(cellId, turn())){
@@ -123,8 +138,22 @@ class BoardFragment : Fragment() {
 
     private fun gameOver(wOd: String){
         if(wOd == "win"){
-
+            var winner = turn()
+            var foundwinner = false
             tv_status.text = "${turn().name} won the game!"
+            playerList.forEach{
+                if(it.name == winner.name){
+                    var wins = it.wins
+                    wins++
+                    playermodel.update(wins, it.name)
+                    foundwinner = true
+                }
+            }
+            if(!foundwinner){
+                winner.wins++
+                playermodel.insert(winner)
+            }
+
         }else if(wOd == "draw"){
             tv_status.text = "It's a draw!"
         }
@@ -135,10 +164,9 @@ class BoardFragment : Fragment() {
                 btn.isClickable = false
             }
         }
+        chronometer.stop()
         gameIsOn = false
-        for(i in 0 ..game.getBoard().size -1){
-            Log.i("Mads", "${game.getBoard()[i]}")
-        }
+        btn_restart.text = getString(R.string.start_button)
     }
 
     private fun winOrDraw(){
@@ -155,25 +183,31 @@ class BoardFragment : Fragment() {
             val row = tb_layout.getChildAt(i) as TableRow
             for (j in 0..row.childCount - 1) {
                 val btn = row.getChildAt(j) as ImageButton
-                //btn.text =""
                 btn.setImageResource(R.drawable.sbrplaceholder)
                 btn.isClickable = true
             }
         }
         count = 0
+        btn_restart.text = getString(R.string.start_button_restart)
         gameIsOn = true
         tv_status.text = "${onePlayer.name}' starts the game!"
         game.resetBoard()
+        chronometer.base = SystemClock.elapsedRealtime()
+        chronometer.start()
     }
 
 
     override fun onPause() {
         super.onPause()
         mp?.stop()
+        chronometer.stop()
+
     }
 
     override fun onStart() {
         super.onStart()
+        chronometer.base = SystemClock.elapsedRealtime()
+        chronometer.start()
 
         mp = MediaPlayer.create(context, R.raw.cantinaband)
         mp?.start()
@@ -181,6 +215,44 @@ class BoardFragment : Fragment() {
             mp?.start()
         }
 
+        if(savedState != null){
+            tv_status.text = savedState!!.getString("turn")
+            count = savedState!!.getInt("count")
+
+            gameIsOn = savedState!!.getBoolean("gameState")
+            game.setBoard(savedState?.getIntArray("boardState")!!.toTypedArray())
+            for   (i in 0..tb_layout.childCount - 1) {
+                val row = tb_layout.getChildAt(i) as TableRow
+                for (j in 0..row.childCount - 1) {
+                    val btn = row.getChildAt(j) as ImageButton
+                    if(!gameIsOn){
+                        btn.isClickable = false
+                    }
+                    var currentBoard = game.getBoard()
+                    if(currentBoard[btn.tag.toString().toInt()] == -1){
+                        btn.setImageResource(R.drawable.obiwan)
+                    }else if(currentBoard[btn.tag.toString().toInt()] == -2){
+                        btn.setImageResource(R.drawable.darthvader)
+                    }
+                }
+            }
+
+            savedState = null
+        }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        savedState = Bundle()
+        savedState?.putBoolean("gameState", gameIsOn)
+        savedState?.putInt("count", count)
+        savedState?.putIntArray("boardState", game.getBoard().toIntArray())
+        savedState?.putString("turn", tv_status.text.toString())
+    }
+
+
+
+
+
 
 }

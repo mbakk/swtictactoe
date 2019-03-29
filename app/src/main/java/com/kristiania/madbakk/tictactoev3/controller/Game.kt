@@ -1,12 +1,10 @@
 package com.kristiania.madbakk.tictactoev3.controller
 
-class Game(onePlayer: Boolean, difficulty: String) {
+class Game(onePlayer: Boolean) {
 
     private var board = arrayOf(0, 0, 0, 0, 0, 0, 0, 0, 0)
-    private var gameIsOn = true
 
     val isOnePlayer = onePlayer
-    val difficulty = difficulty
 
     fun move(index: Int, player: Player): Boolean{
         return if(board[index] == -1 || board[index] == -2){
@@ -42,7 +40,7 @@ class Game(onePlayer: Boolean, difficulty: String) {
         return bestMove
     }
 
-    fun minimax(currentBoard: Array<Int>, playerID: Int): Int {
+    private fun minimax(currentBoard: Array<Int>, playerID: Int): Int {
 
         var score : Int
 
@@ -91,6 +89,7 @@ class Game(onePlayer: Boolean, difficulty: String) {
                     if(value < best){
                         best = value
                     }
+                    //undo move
                     currentBoard[i] = savedValue
                 }
             }
@@ -130,7 +129,7 @@ class Game(onePlayer: Boolean, difficulty: String) {
         return false
     }
 
-    fun findEmptyCell(tempboard: Array<Int>): ArrayList<Int> {
+    private fun findEmptyCell(tempboard: Array<Int>): ArrayList<Int> {
         var emptyCells = arrayListOf<Int>()
         for (i in 0..tempboard.size - 1) {
             if (tempboard[i] != -1 && tempboard[i] != -2) {
@@ -146,5 +145,9 @@ class Game(onePlayer: Boolean, difficulty: String) {
 
     fun resetBoard(){
         board = arrayOf(0,0,0,0,0,0,0,0,0)
+    }
+
+    fun setBoard(savedBoard: Array<Int>){
+        board = savedBoard
     }
 }
