@@ -1,9 +1,8 @@
-package com.kristiania.madbakk.tictactoev3.controller
+package com.kristiania.madbakk.tictactoev3.model
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

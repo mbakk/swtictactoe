@@ -1,4 +1,4 @@
-package com.kristiania.madbakk.tictactoev3.model
+package com.kristiania.madbakk.tictactoev3.controller
 
 
 import android.media.MediaPlayer
@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.fragment_login.*
 class LoginFragment : Fragment() {
 
     private lateinit var mp : MediaPlayer
+    private var savedState: Bundle? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,8 +27,6 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        mp = MediaPlayer.create(context, R.raw.swtheme)
 
         iv_sound.setOnClickListener {
             if(mp.isPlaying){
@@ -64,15 +63,21 @@ class LoginFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         mp.stop()
+        savedState = Bundle()
+        savedState?.putInt("mp", mp.currentPosition)
     }
+
 
     override fun onStart() {
         super.onStart()
-
         mp = MediaPlayer.create(context, R.raw.swtheme)
-        mp.start()
-        mp.setOnCompletionListener {
-            mp.start()
+
+        if(savedState != null){
+            mp.seekTo(savedState!!.getInt("mp"))
+            savedState = null
         }
+        mp.start()
     }
+
+
 }

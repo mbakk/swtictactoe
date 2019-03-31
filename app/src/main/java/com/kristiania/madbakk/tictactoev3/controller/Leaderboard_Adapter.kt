@@ -1,11 +1,11 @@
-package com.kristiania.madbakk.tictactoev3.model
+package com.kristiania.madbakk.tictactoev3.controller
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.kristiania.madbakk.tictactoev3.R
-import com.kristiania.madbakk.tictactoev3.controller.Player
+import com.kristiania.madbakk.tictactoev3.model.Player
 import kotlinx.android.synthetic.main.lb_row.view.*
 
 class Leaderboard_Adapter(val playerList: ArrayList<Player>): RecyclerView.Adapter<Leaderboard_ViewHolder>() {

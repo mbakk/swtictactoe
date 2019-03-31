@@ -1,8 +1,7 @@
-package com.kristiania.madbakk.tictactoev3.controller
+package com.kristiania.madbakk.tictactoev3.model
 
 
 import android.arch.lifecycle.LiveData
-import android.support.annotation.WorkerThread
 
 class PlayerRepository(private val playerDao : PlayerDAO) {
 

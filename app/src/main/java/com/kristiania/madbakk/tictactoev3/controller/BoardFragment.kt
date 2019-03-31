@@ -1,20 +1,19 @@
-package com.kristiania.madbakk.tictactoev3.model
+package com.kristiania.madbakk.tictactoev3.controller
 
 import android.arch.lifecycle.Observer
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.SystemClock
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TableRow
 import com.kristiania.madbakk.tictactoev3.R
-import com.kristiania.madbakk.tictactoev3.controller.Game
-import com.kristiania.madbakk.tictactoev3.controller.Player
-import com.kristiania.madbakk.tictactoev3.controller.PlayerModel
+import com.kristiania.madbakk.tictactoev3.model.Game
+import com.kristiania.madbakk.tictactoev3.model.Player
+import com.kristiania.madbakk.tictactoev3.model.PlayerModel
 import kotlinx.android.synthetic.main.fragment_board.*
 import kotlin.concurrent.thread
 
@@ -25,7 +24,7 @@ class BoardFragment : Fragment() {
     private lateinit var twoPlayer :Player
     private lateinit var game :Game
     private var gameIsOn = true
-    private var mp: MediaPlayer? = null
+    private lateinit var  mp: MediaPlayer
     private lateinit var playermodel : PlayerModel
     private var playerList = arrayListOf<Player>()
     private var savedState: Bundle? = null
@@ -54,6 +53,8 @@ class BoardFragment : Fragment() {
                 twoPlayer = Player(p2, 0, -2)
             }
         }
+
+        chronometer.base = SystemClock.elapsedRealtime()
 
         tv_status.text = "${onePlayer.name}' starts the game!"
 
@@ -120,7 +121,6 @@ class BoardFragment : Fragment() {
             for (j in 0..row.childCount - 1) {
                 val btn = row.getChildAt(j) as ImageButton
                 if(move == btn.tag.toString().toInt()){
-                    //btn.text = "O"
                     btn.setImageResource(R.drawable.darthvader)
                 }
             }
@@ -194,31 +194,34 @@ class BoardFragment : Fragment() {
         game.resetBoard()
         chronometer.base = SystemClock.elapsedRealtime()
         chronometer.start()
+
     }
 
 
-    override fun onPause() {
-        super.onPause()
-        mp?.stop()
+    override fun onStop() {
+        super.onStop()
+        mp.stop()
         chronometer.stop()
 
+        savedState = Bundle()
+        savedState?.putInt("mp", mp.currentPosition)
+        savedState?.putLong("timer-offset", chronometer.base - SystemClock.elapsedRealtime())
+        savedState?.putBoolean("gameState", gameIsOn)
+        savedState?.putInt("count", count)
+        savedState?.putIntArray("boardState", game.getBoard().toIntArray())
+        savedState?.putString("turn", tv_status.text.toString())
     }
 
     override fun onStart() {
         super.onStart()
-        chronometer.base = SystemClock.elapsedRealtime()
         chronometer.start()
-
         mp = MediaPlayer.create(context, R.raw.cantinaband)
-        mp?.start()
-        mp?.setOnCompletionListener {
-            mp?.start()
-        }
 
         if(savedState != null){
             tv_status.text = savedState!!.getString("turn")
             count = savedState!!.getInt("count")
-
+            mp.seekTo(savedState!!.getInt("mp"))
+            chronometer.base = SystemClock.elapsedRealtime() + savedState!!.getLong("timer-offset")
             gameIsOn = savedState!!.getBoolean("gameState")
             game.setBoard(savedState?.getIntArray("boardState")!!.toTypedArray())
             for   (i in 0..tb_layout.childCount - 1) {
@@ -236,23 +239,12 @@ class BoardFragment : Fragment() {
                     }
                 }
             }
-
             savedState = null
         }
+        mp.start()
+        mp.setOnCompletionListener {
+            mp.start()
+        }
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        savedState = Bundle()
-        savedState?.putBoolean("gameState", gameIsOn)
-        savedState?.putInt("count", count)
-        savedState?.putIntArray("boardState", game.getBoard().toIntArray())
-        savedState?.putString("turn", tv_status.text.toString())
-    }
-
-
-
-
-
 
 }

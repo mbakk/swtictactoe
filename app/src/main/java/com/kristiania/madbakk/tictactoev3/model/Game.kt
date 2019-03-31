@@ -1,4 +1,4 @@
-package com.kristiania.madbakk.tictactoev3.controller
+package com.kristiania.madbakk.tictactoev3.model
 
 class Game(onePlayer: Boolean) {
 
@@ -62,7 +62,7 @@ class Game(onePlayer: Boolean) {
 
             for(i in 0 .. currentBoard.size -1){
                 if(currentBoard[i] != -1 && currentBoard[i] != -2) {
-                    var savedValue = currentBoard[i]
+                    var tempCell = currentBoard[i]
                     currentBoard[i] = -2
                     val value = minimax(currentBoard, -1)
 
@@ -71,7 +71,7 @@ class Game(onePlayer: Boolean) {
                         best = value
                     }
                     //undo move
-                    currentBoard[i] = savedValue
+                    currentBoard[i] = tempCell
                 }
             }
             return best
@@ -81,7 +81,7 @@ class Game(onePlayer: Boolean) {
 
             for(i in 0 ..currentBoard.size -1){
                 if(currentBoard[i] != -1 && currentBoard[i] != -2){
-                    var savedValue= currentBoard[i]
+                    var tempCell= currentBoard[i]
                     currentBoard[i] = -1
                     val value = minimax(currentBoard, -2)
 
@@ -90,7 +90,7 @@ class Game(onePlayer: Boolean) {
                         best = value
                     }
                     //undo move
-                    currentBoard[i] = savedValue
+                    currentBoard[i] = tempCell
                 }
             }
             return best

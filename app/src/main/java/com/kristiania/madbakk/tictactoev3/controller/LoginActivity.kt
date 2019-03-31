@@ -1,4 +1,4 @@
-package com.kristiania.madbakk.tictactoev3.model
+package com.kristiania.madbakk.tictactoev3.controller
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle

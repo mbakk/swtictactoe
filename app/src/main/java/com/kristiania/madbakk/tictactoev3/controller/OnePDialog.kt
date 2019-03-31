@@ -1,4 +1,4 @@
-package com.kristiania.madbakk.tictactoev3.model
+package com.kristiania.madbakk.tictactoev3.controller
 
 
 
@@ -10,7 +10,6 @@ import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.widget.Toast
 import com.kristiania.madbakk.tictactoev3.R
-import kotlinx.android.synthetic.main.dialog_oneplayer.*
 import kotlinx.android.synthetic.main.dialog_oneplayer.view.*
 
 
