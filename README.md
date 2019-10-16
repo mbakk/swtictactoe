@@ -8,7 +8,7 @@ AI implementet with the minimax algorithm.
 
 #The assignment
 
-The assignment was to create your an application of the classic game, Tic Tac Toe.
+The assignment was to create an application of the classic game, Tic Tac Toe.
 
 We had some requirements for the application:
   - The application must have Fragment-architecture
