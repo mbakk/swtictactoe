@@ -21,8 +21,8 @@ Extra points:
   
   
 <p float="left">
-  <img src="https://github.com/mbakk/swtictactoe/blob/master/images/sw1.png" width="100" />
-  <img src="https://github.com/mbakk/swtictactoe/blob/master/images/sw2.png" width="100" /> 
-  <img src="https://github.com/mbakk/swtictactoe/blob/master/images/sw3.png" width="100" />
-  <img src="https://github.com/mbakk/swtictactoe/blob/master/images/sw4.png" width="100" />
+  <img src="https://github.com/mbakk/swtictactoe/blob/master/images/sw1.png" width="200" />
+  <img src="https://github.com/mbakk/swtictactoe/blob/master/images/sw2.png" width="200" /> 
+  <img src="https://github.com/mbakk/swtictactoe/blob/master/images/sw3.png" width="200" />
+  <img src="https://github.com/mbakk/swtictactoe/blob/master/images/sw4.png" width="200" />
 </p>
