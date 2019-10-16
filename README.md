@@ -19,4 +19,7 @@ Extra points:
   - Good estetics and design
   - Implement the phones AI so well, that the sensor can't beat the phone in 10 tries. 
   
-<img src="https://github.com/mbakk/swtictactoe/blob/master/images/sw1.png" width="48">
+<img src="https://github.com/mbakk/swtictactoe/blob/master/images/sw1.png" width="72">
+<img src="https://github.com/mbakk/swtictactoe/blob/master/images/sw1.png" width="72">
+<img src="https://github.com/mbakk/swtictactoe/blob/master/images/sw1.png" width="72">
+<img src="https://github.com/mbakk/swtictactoe/blob/master/images/sw1.png" width="72">
