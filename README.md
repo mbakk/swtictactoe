@@ -6,7 +6,7 @@ Star Wars themed Tic Tac Toe game, with two-player mode and one-player against A
 AI implementet with the minimax algorithm. 
 
 
-#The assignment
+## The assignment
 
 The assignment was to create an application of the classic game, Tic Tac Toe.
 
